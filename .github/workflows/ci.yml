@@ -14,6 +14,9 @@ on:
         description: 'URL of the JPEXS nightly build zip file (optional)'
         required: false
 
+permissions:
+  contents: read
+  
 jobs:
   export-swf:
     runs-on: ubuntu-latest
@@ -63,7 +66,7 @@ jobs:
     - name: Export SWF to FLA
       run: |
         mkdir -p fla-output/src
-        java -Xmx4g -Xss32m -jar ffdec/ffdec.jar \
+        java -Djava.net.preferIPv4Stack=true -Djna.nosys=true -Djava.util.Arrays.useLegacyMergeSort=true -Xmx4g -Xss32m -jar ffdec/ffdec.jar \
           -cli \
           -config formatting.indent.size=2,formatting.tab.size=2,fixAntialiasConflation=1,parallelSpeedUpThreadCount=4,registerNameFormat="_loc%d_" \
           -onerror ignore \
