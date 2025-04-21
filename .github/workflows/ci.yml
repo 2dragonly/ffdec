@@ -32,6 +32,9 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Setup Adobe Flashplayer
+      uses: joshtynjala/setup-adobe-flash-player-action@master
+
     - name: Determine JPEXS nightly build URL
       id: get_jpexs_url
       run: |
