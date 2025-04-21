@@ -49,11 +49,16 @@ jobs:
 
     - name: Download SWF file
       run: |
-        curl -L -o input.swf "${{ github.event.inputs.swf_url }}"
+        curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 Edg/90.0.818.51" -o source.swf "${{ github.event.inputs.swf_url }}"
+
+    - name: List FFdec configs
+      run: |
+        java -Xmx6g -Xss32m -jar ffdec/ffdec.jar \
+          -cli -listconfigs
 
     - name: Export SWF to FLA
       run: |
-        mkdir -p fla-output
+        mkdir -p fla-output/src
         java -Xmx6g -Xss32m -jar ffdec/ffdec.jar \
           -cli \
           -onerror ignore \
@@ -61,7 +66,7 @@ jobs:
           -exportTimeout 1200 \
           -exportFileTimeout 600 \
           -format fla:${{ github.event.inputs.fla_version }} \
-          -export fla fla-output input.swf
+          -export fla fla-output/src source.swf
 
     - name: Upload FLA artifact
       uses: actions/upload-artifact@main
