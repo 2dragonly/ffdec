@@ -26,6 +26,12 @@ jobs:
           *) echo "Invalid fla_version: ${{ github.event.inputs.fla_version }}" && exit 1 ;;
         esac
 
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
     - name: Determine JPEXS nightly build URL
       id: get_jpexs_url
       run: |
@@ -57,7 +63,7 @@ jobs:
         java -Xmx4g -Xss32m -jar ffdec/ffdec.jar \
           -cli \
           -config formatting.indent.size=2,formatting.tab.size=2,fixAntialiasConflation=1,parallelSpeedUpThreadCount=4,registerNameFormat="_loc%d_" \
-          -onerror retry 5 \
+          -onerror ignore \
           -timeout 600 \
           -exportTimeout 1200 \
           -exportFileTimeout 600 \
