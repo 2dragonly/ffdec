@@ -68,13 +68,13 @@ jobs:
         mkdir -p fla-output/src
         java -Djava.net.preferIPv4Stack=true -Djna.nosys=true -Djava.util.Arrays.useLegacyMergeSort=true -Xmx4g -Xss32m -jar ffdec/ffdec.jar \
           -cli \
+          -config formatting.indent.size=2,formatting.tab.size=2,parallelSpeedUpThreadCount=4,registerNameFormat="_loc%d_" \
           -onerror retry 5 \
           -timeout 600 \
           -exportTimeout 1200 \
           -exportFileTimeout 600 \
           -format fla:${{ github.event.inputs.fla_version }} \
           -export fla fla-output/src source.swf
-    # -config formatting.indent.size=2,formatting.tab.size=2,fixAntialiasConflation=1,parallelSpeedUpThreadCount=4,registerNameFormat="_loc%d_" \
 
     - name: Upload FLA artifact
       uses: actions/upload-artifact@main
