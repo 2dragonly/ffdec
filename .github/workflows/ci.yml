@@ -68,7 +68,7 @@ jobs:
         mkdir -p fla-output/src
         java -Djava.net.preferIPv4Stack=true -Djna.nosys=true -Djava.util.Arrays.useLegacyMergeSort=true -Xmx4g -Xss32m -jar ffdec/ffdec.jar \
           -cli \
-          -config formatting.indent.size=2,formatting.tab.size=2,parallelSpeedUpThreadCount=4,registerNameFormat="_loc%d_" \
+          -config formatting.indent.size=2,formatting.tab.size=2,registerNameFormat="_loc%d_" \
           -onerror retry 5 \
           -timeout 600 \
           -exportTimeout 1200 \
