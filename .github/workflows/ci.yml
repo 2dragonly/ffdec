@@ -1,0 +1,42 @@
+name: Export SWF → FLA
+
+on:
+  workflow_dispatch:
+    inputs:
+      swf_url:
+        description: 'URL of the SWF to decompile'
+        required: true
+
+jobs:
+  export-swf:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download JPEXS nightly build
+      run: |
+        curl -L -o jpexs-nightly.zip \
+          https://github.com/jindrapetrik/jpexs-decompiler/releases/download/nightly3060/ffdec_22.0.2_nightly3060.zip
+
+    - name: Extract JPEXS ZIP
+      run: |
+        unzip jpexs-nightly.zip -d ffdec
+
+    - name: Download SWF file
+      run: |
+        curl -L -o input.swf "${{ github.event.inputs.swf_url }}"
+
+    - name: Export SWF to FLA
+      run: |
+        mkdir -p fla-output
+        java -Xmx4g -jar ffdec/ffdec.jar \
+          -cli \
+          -stat \
+          -timeout 300 \
+          -exportTimeout 600 \
+          -export fla fla-output input.swf
+
+    - name: Upload FLA artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: exported-fla
+        path: fla-output
